@@ -1,0 +1,20 @@
+# bandit.yaml — Configuration de l'analyse de sécurité
+# Bandit analyse le code Python à la recherche de vulnérabilités connues
+
+# Tests à exclure (faux positifs courants en contexte pédagogique)
+skips:
+  - B101  # assert_used : utilisé en pédagogie, pas en prod
+  - B311  # random : random standard accepté (pas cryptographique)
+
+# Niveau de sévérité minimum à rapporter : LOW / MEDIUM / HIGH
+severity: LOW
+
+# Niveau de confiance minimum : LOW / MEDIUM / HIGH
+confidence: MEDIUM
+
+# Répertoires à exclure de l'analyse
+exclude_dirs:
+  - venv
+  - .venv
+  - tests
+  - __pycache__

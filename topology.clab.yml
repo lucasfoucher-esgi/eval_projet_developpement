@@ -1,0 +1,97 @@
+# =============================================================
+# topology.clab.yml — Réseau SDN simulé avec ContainerLab
+#
+# Topologie :
+#   [client1] ──┐                     ┌── [client3]
+#  192.168.1/24 │                     │  192.168.3/24
+#               ├── [routeur1] ─────── [routeur2] ┤
+#   [client2] ──┘   10.0.0.0/30      └── [client4]
+#  192.168.2/24 │                        192.168.4/24
+#               │
+#          [serveur-ml]  ← image projet-ml:latest
+#           10.10.0.2       JupyterLab port 8888
+#
+# Déploiement : sudo clab deploy --topo containerlab/topology.clab.yml
+# Destruction  : sudo clab destroy --topo containerlab/topology.clab.yml
+# =============================================================
+
+name: reseau-dev-ml
+
+topology:
+
+  # ── Nœuds ──────────────────────────────────────────────────
+  nodes:
+
+    # Routeur 1 — FRRouting (OSPF)
+    routeur1:
+      kind: linux
+      image: frrouting/frr:latest
+      env:
+        ZEBRA_CONF: |
+          hostname routeur1
+          log stdout
+        OSPFD_CONF: |
+          hostname routeur1
+          router ospf
+            network 10.0.0.0/30 area 0
+            network 192.168.1.0/24 area 0
+            network 192.168.2.0/24 area 0
+            network 10.10.0.0/24 area 0
+
+    # Routeur 2 — FRRouting (OSPF)
+    routeur2:
+      kind: linux
+      image: frrouting/frr:latest
+      env:
+        ZEBRA_CONF: |
+          hostname routeur2
+          log stdout
+        OSPFD_CONF: |
+          hostname routeur2
+          router ospf
+            network 10.0.0.0/30 area 0
+            network 192.168.3.0/24 area 0
+            network 192.168.4.0/24 area 0
+
+    # Clients Linux (network-multitool = outils réseau inclus)
+    client1:
+      kind: linux
+      image: wbitt/network-multitool:latest
+
+    client2:
+      kind: linux
+      image: wbitt/network-multitool:latest
+
+    client3:
+      kind: linux
+      image: wbitt/network-multitool:latest
+
+    client4:
+      kind: linux
+      image: wbitt/network-multitool:latest
+
+    # Serveur ML — notre image JupyterLab
+    serveur-ml:
+      kind: linux
+      image: projet-ml:latest
+      ports:
+        - "8888:8888"
+      env:
+        PYTHONPATH: /workspace/libs
+
+  # ── Liens entre les nœuds ───────────────────────────────────
+  links:
+
+    # Lien inter-routeurs (backbone 10.0.0.0/30)
+    - endpoints: ["routeur1:eth0", "routeur2:eth0"]
+
+    # Clients côté routeur1
+    - endpoints: ["routeur1:eth1", "client1:eth0"]
+    - endpoints: ["routeur1:eth2", "client2:eth0"]
+
+    # Clients côté routeur2
+    - endpoints: ["routeur2:eth1", "client3:eth0"]
+    - endpoints: ["routeur2:eth2", "client4:eth0"]
+
+    # Serveur ML connecté au routeur1
+    - endpoints: ["routeur1:eth3", "serveur-ml:eth0"]

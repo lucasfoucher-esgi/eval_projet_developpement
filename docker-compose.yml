@@ -1,0 +1,39 @@
+# ============================================================
+# docker-compose.yml — Orchestration de l'environnement
+# ============================================================
+# Service unique : JupyterLab (ML + bibliothèques TP)
+#
+# Démarrage : docker compose up -d
+# Arrêt     : docker compose down
+# ============================================================
+
+version: "3.9"
+
+volumes:
+  jupyter_work:
+
+services:
+
+  # ── JupyterLab ML ─────────────────────────────────────────
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jupyter-ml
+    image: projet-ml:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      # Persistance du travail entre les redémarrages
+      - jupyter_work:/workspace/work
+      # Montage live des bibliothèques (modification sans rebuild)
+      - ./libs:/workspace/libs:ro
+    environment:
+      # Rend les bibliothèques TP importables directement
+      - PYTHONPATH=/workspace/libs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

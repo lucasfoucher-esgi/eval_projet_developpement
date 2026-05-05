@@ -1,0 +1,41 @@
+# ============================================================
+# requirements.txt — Environnement de développement ML
+# ============================================================
+#
+# 3 bibliothèques ML/DL choisies pour leur complémentarité :
+#   NumPy      → socle de calcul numérique (tableaux, algèbre)
+#   Scikit-learn → algorithmes ML classiques (entraînement, éval)
+#   Matplotlib  → visualisation des données et des résultats
+#
+# Ensemble elles forment une chaîne complète :
+#   données (NumPy) → modèle (Scikit-learn) → graphe (Matplotlib)
+# ============================================================
+
+# Calcul numérique — fondation de tout l'écosystème ML
+numpy>=1.26.0
+
+# Machine Learning — algorithmes entraînables, pipelines, métriques
+scikit-learn>=1.4.0
+
+# Visualisation — courbes, matrices de confusion, nuages de points
+matplotlib>=3.8.0
+
+# Interface Jupyter (incluse pour l'exploration interactive)
+jupyterlab>=4.1.0
+ipykernel>=6.29.0
+
+# ============================================================
+# 3 outils de qualité du code — objectifs complémentaires :
+#   Pylint  → analyse statique  : style, erreurs, bonnes pratiques
+#   Bandit  → sécurité          : vulnérabilités connues du code
+#   Radon   → complexité        : lisibilité et maintenabilité
+# ============================================================
+
+# Style, erreurs et bonnes pratiques (score /10)
+pylint>=3.1.0
+
+# Vulnérabilités de sécurité dans le code Python
+bandit>=1.7.8
+
+# Complexité cyclomatique et indice de maintenabilité
+radon>=6.0.1
