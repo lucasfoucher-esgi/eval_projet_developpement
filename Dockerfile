@@ -45,7 +45,6 @@ RUN pip install --upgrade pip setuptools wheel
 WORKDIR /workspace
 
 # ---- 4. Copie des fichiers de configuration qualité ----
-COPY .pylintrc   /workspace/.pylintrc
 COPY bandit.yaml /workspace/bandit.yaml
 
 # ---- 5. Installation des dépendances Python ----
