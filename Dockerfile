@@ -55,7 +55,7 @@ RUN pip install -r requirements.txt
 COPY libs/ /workspace/libs/
 
 # ---- 7. Script de vérification qualité ----
-COPY check_quality.sh /usr/local/bin/check_quality
+COPY scripts/check_quality.sh /usr/local/bin/check_quality
 RUN chmod +x /usr/local/bin/check_quality
 
 # ---- 8. Port JupyterLab ----
