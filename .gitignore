@@ -1,0 +1,36 @@
+# =============================================================
+# .gitignore — Fichiers exclus du versionnement Git
+# =============================================================
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Environnements virtuels ───────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Rapports qualité (générés automatiquement) ───────────────
+quality_reports/
+
+# ── JupyterLab ────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── ContainerLab (généré au déploiement) ────────────────────
+clab-reseau-dev-ml/
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+
+# ── OS ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Docker ────────────────────────────────────────────────────
+.env
