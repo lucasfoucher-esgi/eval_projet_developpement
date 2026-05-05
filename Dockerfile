@@ -12,7 +12,7 @@
 FROM ubuntu:22.04
 
 LABEL maintainer="projet-dev-ml"
-LABEL description="Environnement de développement Python ML avec outils qualité"
+LABEL description="Environnement de développement Python"
 LABEL version="1.0"
 
 # ---- Variables d'environnement ----
@@ -45,8 +45,8 @@ RUN pip install --upgrade pip setuptools wheel
 WORKDIR /workspace
 
 # ---- 4. Copie des fichiers de configuration qualité ----
-COPY config/.pylintrc   /workspace/.pylintrc
-COPY config/bandit.yaml /workspace/bandit.yaml
+COPY .pylintrc   /workspace/.pylintrc
+COPY bandit.yaml /workspace/bandit.yaml
 
 # ---- 5. Installation des dépendances Python ----
 COPY requirements.txt /workspace/requirements.txt
@@ -56,7 +56,7 @@ RUN pip install -r requirements.txt
 COPY libs/ /workspace/libs/
 
 # ---- 7. Script de vérification qualité ----
-COPY scripts/check_quality.sh /usr/local/bin/check_quality
+COPY check_quality.sh /usr/local/bin/check_quality
 RUN chmod +x /usr/local/bin/check_quality
 
 # ---- 8. Port JupyterLab ----
